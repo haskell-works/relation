@@ -23,4 +23,3 @@ main = doctest [
 --             , "src/Data/Relation/Examples/E01.hs"
                , "src/Data/Relation/Examples/E02.hs"
                ]
-
