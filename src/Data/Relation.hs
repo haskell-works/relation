@@ -1,7 +1,8 @@
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Data.Relation
--- Copyright   :  (c) DD.  2012
+-- Copyright   :  (c) JK.  2019
+--                (c) DD.  2012
 --                (c) LFL. 2009
 -- License     :  BSD-style
 -- Maintainer  :  Drew Day<drewday@gmail.com>
