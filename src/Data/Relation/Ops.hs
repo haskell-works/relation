@@ -9,9 +9,7 @@ module Data.Relation.Ops
 import Data.Relation.Internal (Relation)
 import Data.Set               (Set)
 
-import qualified Data.Map                   as M
 import qualified Data.Relation              as R
-import qualified Data.Relation.Internal     as R
 import qualified Data.Relation.Internal.Set as S
 import qualified Data.Set                   as S
 
@@ -69,8 +67,8 @@ import qualified Data.Set                   as S
 
 -- | Domain restriction for a relation. Modeled on z.
 (<|) :: (Ord a, Ord b) => Set a -> Relation a b  -> Relation a b
-s <| r = R.restrictDomain s r
+s <| r = R.restrictDom s r
 
 -- | Range restriction for a relation. Modeled on z.
 (|>) :: (Ord a, Ord b) => Relation a b -> Set b -> Relation a b
-r |> t = R.restrictRange t r
+r |> t = R.restrictRan t r
