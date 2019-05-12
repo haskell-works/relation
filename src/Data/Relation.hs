@@ -1,7 +1,8 @@
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Data.Relation
--- Copyright   :  (c) DD.  2012
+-- Copyright   :  (c) JK.  2019
+--                (c) DD.  2012
 --                (c) LFL. 2009
 -- License     :  BSD-style
 -- Maintainer  :  Drew Day<drewday@gmail.com>
@@ -28,7 +29,7 @@ module Data.Relation (
 
    -- * The @Relation@ Type
 
-   Relation ()
+   Relation (..)
 
    -- *  Provided functionality:
 
@@ -90,12 +91,13 @@ module Data.Relation (
 
 where
 
-import           Control.Monad (MonadPlus, guard)
-import           Data.Functor  (Functor ((<$)))
-import qualified Data.Map      as M
-import           Data.Maybe    (fromJust, fromMaybe, isJust)
-import qualified Data.Set      as S
-import           Prelude       hiding (null)
+import Control.Monad (MonadPlus, guard)
+import Data.Functor  (Functor ((<$)))
+import Data.Maybe    (fromMaybe)
+import Prelude       hiding (null)
+
+import qualified Data.Map as M
+import qualified Data.Set as S
 
 -- |
 -- This implementation avoids using @"S.Set (a,b)"@ because
