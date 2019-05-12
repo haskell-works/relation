@@ -1,7 +1,7 @@
 cabal-version:      2.2
 
 name:               relation
-version:            0.3
+version:            0.4
 synopsis:           A data structure representing Relations on Sets.
 description:        A library to model relationships between two objects that are subclasses of Ord.
 
