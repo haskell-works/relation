@@ -42,7 +42,9 @@ library
           , containers
   hs-source-dirs:     src
   exposed-modules:    Data.Relation
+                    , Data.Relation.Ops
                     , Data.Relation.Internal
+                    , Data.Relation.Internal.Set
 
 test-suite relation-test
   import:   base, common

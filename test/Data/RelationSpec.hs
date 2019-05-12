@@ -2,19 +2,20 @@ module Data.RelationSpec
   ( spec
   ) where
 
-import Data.Relation               ((<$|), (<|), (|$>), (|>))
+import Data.Relation.Ops
 import HaskellWorks.Hspec.Hedgehog
 import Hedgehog
 import Test.Hspec
 
-import qualified Data.Map      as M
-import qualified Data.Relation as DR
-import qualified Data.Set      as S
+import qualified Data.Map               as M
+import qualified Data.Relation          as DR
+import qualified Data.Relation.Internal as DR
+import qualified Data.Set               as S
 
 {-# ANN module ("HLint: ignore Redundant do" :: String) #-}
 
 e :: DR.Relation String String
-e =  DR.fromList
+e = DR.fromList
   [ ("Rebeca" , "History"        )
   , ("Rebeca" , "Mathematics"    )
   , ("Rolando", "Religion"       )
