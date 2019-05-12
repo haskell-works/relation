@@ -31,32 +31,36 @@ module Data.Relation (
 
     -- *  Provided functionality:
     -- ** Questions
-  , size          --  # Tuples in the relation?
-  , null          --  Is empty?
+  , size            -- Number of Tuples in the relation?
+  , null            -- Is empty?
 
     -- ** Construction
-  , empty         --  Construct an empty relation.
-  , fromList      --  Relation <- []
-  , singleton     --  Construct a relation with a single element.
+  , empty           -- Construct an empty relation.
+  , fromList        -- Relation <- []
+  , singleton       -- Construct a relation with a single element.
 
     -- ** Operations
-  , union         --  Union of two relations.
-  , unions        --  Union on a list of relations.
-  , intersection  --  Intersection of two relations.
-  , insert        --  Insert a tuple to the relation.
-  , delete        --  Delete a tuple from the relation.
-  , lookupDom     -- The Set of values associated with a value in the domain.
-  , lookupRan     -- The Set of values associated with a value in the range.
-  , memberDom     --  Is the element in the domain?
-  , memberRan     --  Is the element in the range?
-  , member        --  Is the tuple   in the relation?
+  , union           -- Union of two relations.
+  , unions          -- Union on a list of relations.
+  , intersection    -- Intersection of two relations.
+  , insert          -- Insert a tuple to the relation.
+  , delete          -- Delete a tuple from the relation.
+  , lookupDom       -- The Set of values associated with a value in the domain.
+  , lookupRan       -- The Set of values associated with a value in the range.
+  , memberDom       -- Is the element in the domain?
+  , memberRan       -- Is the element in the range?
+  , member          -- Is the tuple   in the relation?
   , notMember
+  , restrictDomain  -- Restrict the domain to that of the provided set
+  , restrictRange   -- Restrict the range to that of the provided set
+  , withoutDomain   -- Restrict the domain to exclude elements of the provided set
+  , withoutRange    -- Restrict the range to exclude elements of the provided set
 
     -- ** Conversion
-  , toList        --  Construct a list from a relation
-  , dom           --  Extract the elements of the range to a Set.
-  , ran           --  Extract the elements of the domain to a Set.
-  , converse      -- ** Invertible Relations
+  , toList          -- Construct a list from a relation
+  , dom             -- Extract the elements of the range to a Set.
+  , ran             -- Extract the elements of the domain to a Set.
+  , converse        -- Converse of the relation
   ) where
 
 import Control.Monad          (MonadPlus, guard)
@@ -198,3 +202,31 @@ converse r = Relation
   }
   where range'  = R.range r
         domain' = R.domain r
+
+-- | Restrict the domain to that of the provided set
+restrictDomain :: (Ord a, Ord b) => S.Set a -> Relation a b -> Relation a b
+restrictDomain s r = Relation
+  { R.domain = M.restrictKeys (R.domain r) s
+  , R.range  = M.mapMaybe (S.justUnlessEmpty . S.intersection s) (R.range r)
+  }
+
+-- | Restrict the range to that of the provided set
+restrictRange :: (Ord a, Ord b) => S.Set b -> Relation a b -> Relation a b
+restrictRange s r = Relation
+  { R.domain  = M.mapMaybe (S.justUnlessEmpty . S.intersection s) (R.domain r)
+  , R.range   = M.restrictKeys (R.range r) s
+  }
+
+-- | Restrict the domain to exclude elements of the provided set
+withoutDomain :: (Ord a, Ord b) => S.Set a -> Relation a b -> Relation a b
+withoutDomain s r = Relation
+  { R.domain = M.withoutKeys (R.domain r) s
+  , R.range  = M.mapMaybe (S.justUnlessEmpty . flip S.difference s) (R.range r)
+  }
+
+-- | Restrict the range to exclude elements of the provided set
+withoutRange :: (Ord a, Ord b) => S.Set b -> Relation a b -> Relation a b
+withoutRange s r = Relation
+  { R.domain  = M.mapMaybe (S.justUnlessEmpty . flip S.difference s) (R.domain r)
+  , R.range   = M.withoutKeys (R.range r) s
+  }
