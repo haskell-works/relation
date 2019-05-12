@@ -69,14 +69,8 @@ import qualified Data.Set                   as S
 
 -- | Domain restriction for a relation. Modeled on z.
 (<|) :: (Ord a, Ord b) => Set a -> Relation a b  -> Relation a b
-s <| r = R.fromList $ concatMap (\(x, y) -> zip (repeat x) (S.toList y)) (M.toList domain')
-  where domain'   = M.unions . map filtrar . S.toList $ s
-        filtrar x = M.filterWithKey (\k _ -> k == x) dr
-        dr        = R.domain r
+s <| r = R.restrictDomain s r
 
 -- | Range restriction for a relation. Modeled on z.
 (|>) :: (Ord a, Ord b) => Relation a b -> Set b -> Relation a b
-r |> t = R.fromList $ concatMap (\(x, y) -> zip (S.toList y) (repeat x)) (M.toList range')
-  where range'    = M.unions . map filtrar . S.toList $ t
-        filtrar x = M.filterWithKey (\k _ -> k == x) rr
-        rr        = R.range r
+r |> t = R.restrictRange t r
