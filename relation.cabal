@@ -44,8 +44,8 @@ library
   exposed-modules:    Data.Relation
 
 test-suite relation-test
-  import:   base
-          , common
+  import:   base, common
+          , containers
           , hedgehog
           , hspec
           , hw-hspec-hedgehog
@@ -53,7 +53,8 @@ test-suite relation-test
   type:               exitcode-stdio-1.0
   main-is:            Spec.hs
   build-depends:      relation
-  other-modules:      Paths_relation
+  other-modules:      Data.RelationSpec
+                    , Paths_relation
   autogen-modules:    Paths_relation
   hs-source-dirs:     test
   ghc-options:        -threaded -rtsopts -with-rtsopts=-N

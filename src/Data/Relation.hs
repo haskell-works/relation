@@ -28,7 +28,7 @@ module Data.Relation (
 
    -- * The @Relation@ Type
 
-   Relation ()
+   Relation (..)
 
    -- *  Provided functionality:
 
@@ -90,12 +90,13 @@ module Data.Relation (
 
 where
 
-import           Control.Monad (MonadPlus, guard)
-import           Data.Functor  (Functor ((<$)))
-import qualified Data.Map      as M
-import           Data.Maybe    (fromJust, fromMaybe, isJust)
-import qualified Data.Set      as S
-import           Prelude       hiding (null)
+import Control.Monad (MonadPlus, guard)
+import Data.Functor  (Functor ((<$)))
+import Data.Maybe    (fromMaybe)
+import Prelude       hiding (null)
+
+import qualified Data.Map as M
+import qualified Data.Set as S
 
 -- |
 -- This implementation avoids using @"S.Set (a,b)"@ because
