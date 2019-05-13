@@ -28,7 +28,7 @@ source-repository head
 
 common base                 { build-depends: base                 >= 4          && < 5      }
 
-common containers           { build-depends: containers           >= 0.5        && < 0.7    }
+common containers           { build-depends: containers           >= 0.5        && < 0.7    } 
 common hedgehog             { build-depends: hedgehog             >= 0.5        && < 0.7    }
 common hspec                { build-depends: hspec                >= 2.4        && < 3      }
 common hw-hspec-hedgehog    { build-depends: hw-hspec-hedgehog    >= 0.1.0.4    && < 0.2    }
