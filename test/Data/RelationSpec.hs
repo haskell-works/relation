@@ -148,48 +148,48 @@ spec = describe "Data.RelationSpec" $ do
         <$> G.int R.constantBounded
         <*> G.alpha
 
-      DR.restrictDomain S.empty (DR.fromList as) === DR.empty
+      DR.restrictDom S.empty (DR.fromList as) === DR.empty
     it "Full range restriction" $ require $ property $ do
       as <- forAll $ G.list (R.linear 0 10) $ (,)
         <$> G.int R.constantBounded
         <*> G.alpha
 
-      DR.restrictRange S.empty (DR.fromList as) === DR.empty
+      DR.restrictRan S.empty (DR.fromList as) === DR.empty
     it "No domain restriction" $ require $ property $ do
       as <- forAll $ G.list (R.linear 0 10) $ (,)
         <$> G.int R.constantBounded
         <*> G.alpha
       let r = DR.fromList as
 
-      DR.restrictDomain (DR.dom r) r === r
+      DR.restrictDom (DR.dom r) r === r
     it "No range restriction" $ require $ property $ do
       as <- forAll $ G.list (R.linear 0 10) $ (,)
         <$> G.int R.constantBounded
         <*> G.alpha
       let r = DR.fromList as
-      DR.restrictRange (DR.ran r) r === r
+      DR.restrictRan (DR.ran r) r === r
     it "Full domain without" $ require $ property $ do
       as <- forAll $ G.list (R.linear 0 10) $ (,)
         <$> G.int R.constantBounded
         <*> G.alpha
       let r = DR.fromList as
-      DR.withoutDomain S.empty r === r
+      DR.withoutDom S.empty r === r
     it "Full range without" $ require $ property $ do
       as <- forAll $ G.list (R.linear 0 10) $ (,)
         <$> G.int R.constantBounded
         <*> G.alpha
       let r = DR.fromList as
-      DR.withoutRange S.empty r === r
+      DR.withoutRan S.empty r === r
     it "No domain without" $ require $ property $ do
       as <- forAll $ G.list (R.linear 0 10) $ (,)
         <$> G.int R.constantBounded
         <*> G.alpha
       let r = DR.fromList as
 
-      DR.withoutDomain (DR.dom r) r === DR.empty
+      DR.withoutDom (DR.dom r) r === DR.empty
     it "No range without" $ require $ property $ do
       as <- forAll $ G.list (R.linear 0 10) $ (,)
         <$> G.int R.constantBounded
         <*> G.alpha
       let r = DR.fromList as
-      DR.withoutRange (DR.ran r) r === DR.empty
+      DR.withoutRan (DR.ran r) r === DR.empty

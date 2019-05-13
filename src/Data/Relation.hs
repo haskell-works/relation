@@ -51,10 +51,10 @@ module Data.Relation (
   , memberRan       -- Is the element in the range?
   , member          -- Is the tuple   in the relation?
   , notMember
-  , restrictDomain  -- Restrict the domain to that of the provided set
-  , restrictRange   -- Restrict the range to that of the provided set
-  , withoutDomain   -- Restrict the domain to exclude elements of the provided set
-  , withoutRange    -- Restrict the range to exclude elements of the provided set
+  , restrictDom     -- Restrict the domain to that of the provided set
+  , restrictRan     -- Restrict the range to that of the provided set
+  , withoutDom      -- Restrict the domain to exclude elements of the provided set
+  , withoutRan      -- Restrict the range to exclude elements of the provided set
 
     -- ** Conversion
   , toList          -- Construct a list from a relation
@@ -204,29 +204,29 @@ converse r = Relation
         domain' = R.domain r
 
 -- | Restrict the domain to that of the provided set
-restrictDomain :: (Ord a, Ord b) => S.Set a -> Relation a b -> Relation a b
-restrictDomain s r = Relation
+restrictDom :: (Ord a, Ord b) => S.Set a -> Relation a b -> Relation a b
+restrictDom s r = Relation
   { R.domain = M.restrictKeys (R.domain r) s
   , R.range  = M.mapMaybe (S.justUnlessEmpty . S.intersection s) (R.range r)
   }
 
 -- | Restrict the range to that of the provided set
-restrictRange :: (Ord a, Ord b) => S.Set b -> Relation a b -> Relation a b
-restrictRange s r = Relation
+restrictRan :: (Ord a, Ord b) => S.Set b -> Relation a b -> Relation a b
+restrictRan s r = Relation
   { R.domain  = M.mapMaybe (S.justUnlessEmpty . S.intersection s) (R.domain r)
   , R.range   = M.restrictKeys (R.range r) s
   }
 
 -- | Restrict the domain to exclude elements of the provided set
-withoutDomain :: (Ord a, Ord b) => S.Set a -> Relation a b -> Relation a b
-withoutDomain s r = Relation
+withoutDom :: (Ord a, Ord b) => S.Set a -> Relation a b -> Relation a b
+withoutDom s r = Relation
   { R.domain = M.withoutKeys (R.domain r) s
   , R.range  = M.mapMaybe (S.justUnlessEmpty . flip S.difference s) (R.range r)
   }
 
 -- | Restrict the range to exclude elements of the provided set
-withoutRange :: (Ord a, Ord b) => S.Set b -> Relation a b -> Relation a b
-withoutRange s r = Relation
+withoutRan :: (Ord a, Ord b) => S.Set b -> Relation a b -> Relation a b
+withoutRan s r = Relation
   { R.domain  = M.mapMaybe (S.justUnlessEmpty . flip S.difference s) (R.domain r)
   , R.range   = M.withoutKeys (R.range r) s
   }
