@@ -56,7 +56,8 @@ test-suite relation-test
   type:               exitcode-stdio-1.0
   main-is:            Spec.hs
   build-depends:      relation
-  other-modules:      Data.RelationSpec
+  other-modules:      Data.Relation.Gen
+                    , Data.RelationSpec
                     , Paths_relation
   autogen-modules:    Paths_relation
   hs-source-dirs:     test
