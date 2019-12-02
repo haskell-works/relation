@@ -66,6 +66,7 @@ module Data.Relation (
   ) where
 
 import Control.Monad          (MonadPlus, guard)
+import Data.Foldable          (fold)
 import Data.Functor           (Functor ((<$)))
 import Data.Map               (Map)
 import Data.Maybe             (fromMaybe)
@@ -285,7 +286,9 @@ a <-< b = Relation
  where
   compose a' = M.mapMaybe
     (S.justUnlessEmpty
-    . foldMap (fromMaybe S.empty . flip M.lookup a')
+    . fold
+    . M.intersection a'
+    . M.fromSet (const ())
     )
 
 -- | Compose two relations: left to right version.
