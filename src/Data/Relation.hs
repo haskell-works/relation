@@ -81,15 +81,27 @@ import qualified Data.Set                   as S
 
 -- The size is calculated using the domain.
 -- |  @size r@ returns the number of tuples in the relation.
+-- >>> size (fromList []) == 0
+-- True
+-- >>> size (fromList [('a', 1)]) == 1
+-- True
 size :: Relation a b -> Int
 size r = M.foldr ((+) . S.size) 0 (R.domain r)
 
 -- | Construct a relation with no elements.
+-- >>> toList (fromList []) == []
+-- True
 empty :: Relation a b
 empty = Relation M.empty M.empty
 
 -- |
 -- The list must be formatted like: [(k1, v1), (k2, v2),..,(kn, vn)].
+-- >>> toList (fromList [('a', 1)]) == [('a', 1)]
+-- True
+-- >>> fromList [('a', 1), ('a', 1)] == fromList [('a', 1), ('a', 1)]
+-- True
+-- >>> fromList [('a', 1), ('b', 1)] == fromList [('a', 1), ('b', 1)]
+-- True
 fromList :: (Ord a, Ord b) => [(a, b)] -> Relation a b
 fromList xs = Relation
   { R.domain  = M.fromListWith S.union $ snd2Set    xs
@@ -98,13 +110,22 @@ fromList xs = Relation
   where snd2Set    = map (\(x, y) -> (x, S.singleton y))
         flipAndSet = map (\(x, y) -> (y, S.singleton x))
 
--- |
--- Builds a List from a Relation.
+-- | Builds a List from a Relation.
+-- >>> toList (fromList [('a', 1)]) == [('a', 1)]
+-- True
+-- >>> toList (fromList [('a', 1), ('b', 2)]) == [('a', 1), ('b', 2)]
+-- True
+-- >>> toList (fromList [('a', 1), ('a', 2)]) == [('a', 1), ('a', 2)]
+-- True
+-- >>> toList (fromList [('a', 1), ('a', 1)]) == [('a', 1)]
+-- True
 toList :: Relation a b -> [(a, b)]
 toList r = concatMap (\(x, y) -> zip (repeat x) (S.toList y)) (M.toList . R.domain $ r)
 
 -- |
 -- Builds a 'Relation' consiting of an association between: @x@ and @y@.
+-- >>> singleton 'a' 1 == fromList [('a', 1)]
+-- True
 singleton :: a -> b -> Relation a b
 singleton x y  = Relation
   { R.domain  = M.singleton x (S.singleton y)
@@ -112,6 +133,12 @@ singleton x y  = Relation
   }
 
 -- | The 'Relation' that results from the union of two relations: @r@ and @s@.
+-- >>> fromList [('a', 1)] `union` fromList [('a', 1)] == fromList [('a', 1)]
+-- True
+-- >>> fromList [('a', 2)] `union` fromList [('a', 2)] == fromList [('a', 2)]
+-- True
+-- >>> fromList [('a', 1)] `union` fromList [('b', 2)] == fromList [('a', 1), ('b', 2)]
+-- True
 union :: (Ord a, Ord b) => Relation a b -> Relation a b -> Relation a b
 union r s = Relation
   { R.domain  = M.unionWith S.union (R.domain r) (R.domain s)
@@ -119,11 +146,27 @@ union r s = Relation
   }
 
 -- | Union a list of relations using the 'empty' relation.
+-- >>> unions [] == fromList []
+-- True
+-- >>> unions [fromList [('a', 1)]] == fromList [('a', 1)]
+-- True
+-- >>> unions [fromList [('a', 1)], fromList [('a', 1)]] == fromList [('a', 1)]
+-- True
+-- >>> unions [fromList [('a', 2)], fromList [('a', 2)]] == fromList [('a', 2)]
+-- True
+-- >>> unions [fromList [('a', 1)], fromList [('b', 2)]] == fromList [('a', 1), ('b', 2)]
+-- True
 unions :: (Ord a, Ord b) => [Relation a b] -> Relation a b
 unions = F.foldl' union empty
 
 -- | Intersection of two relations: @a@ and @b@ are related by @intersection r
 -- s@ exactly when @a@ and @b@ are related by @r@ and @s@.
+-- >>> fromList [('a', 1)] `intersection` fromList [('a', 1)] == fromList [('a', 1)]
+-- True
+-- >>> fromList [('a', 2)] `intersection` fromList [('a', 2)] == fromList [('a', 2)]
+-- True
+-- >>> fromList [('a', 1)] `intersection` fromList [('b', 2)] == fromList []
+-- True
 intersection :: (Ord a, Ord b) => Relation a b -> Relation a b -> Relation a b
 intersection r s = Relation
   { R.domain = doubleIntersect (R.domain r) (R.domain s)
