@@ -7,10 +7,12 @@ import HaskellWorks.Hspec.Hedgehog
 import Hedgehog
 import Test.Hspec
 
+import           Control.Monad (replicateM)
 import qualified Data.List              as L
 import qualified Data.Map               as M
 import qualified Data.Relation          as DR
 import qualified Data.Relation.Internal as DR
+import qualified Data.Relation.Gen      as GR
 import qualified Data.Set               as S
 import qualified Hedgehog.Gen           as G
 import qualified Hedgehog.Range         as R
@@ -193,3 +195,9 @@ spec = describe "Data.RelationSpec" $ do
         <*> G.alpha
       let r = DR.fromList as
       DR.withoutRan (DR.ran r) r === DR.empty
+    it "Compose associatively" $ require $ property $ do
+      ~[a,b,c] <- forAll $ replicateM 3 $ GR.relation
+        (R.linear 10 40)
+        (G.integral (R.linear (1 :: Integer) 10))
+        (G.integral (R.linear (1 :: Integer) 10))
+      ((a DR.<-< b) DR.<-< c) === (a DR.<-< (b DR.<-< c))
