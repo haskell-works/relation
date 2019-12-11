@@ -43,8 +43,8 @@ common config
   ghc-options:        -Wall -O2
 
 library
-  import:   base, config
-          , containers
+  import:             base, config
+                    , containers
   hs-source-dirs:     src
   exposed-modules:    Data.Relation
                     , Data.Relation.Ops
@@ -52,12 +52,12 @@ library
                     , Data.Relation.Internal.Set
 
 test-suite relation-test
-  import:   base, config
-          , containers
-          , hedgehog
-          , hspec
-          , hw-hspec-hedgehog
-          , relation
+  import:             base, config
+                    , containers
+                    , hedgehog
+                    , hspec
+                    , hw-hspec-hedgehog
+                    , relation
   build-depends:      relation
   type:               exitcode-stdio-1.0
   main-is:            Spec.hs
@@ -70,6 +70,17 @@ test-suite relation-test
   build-tool-depends: hspec-discover:hspec-discover
 
 test-suite relation-doctest
+  import:               base, config
+                      , doctest
+                      , doctest-discover
+                      , relation
+  type:                 exitcode-stdio-1.0
+  ghc-options:          -threaded
+  main-is:              DoctestDriver.hs
+  HS-Source-Dirs:       doctest
+  build-tool-depends:   doctest-discover:doctest-discover
+
+test-suite doctest
   import:               base, config
                       , doctest
                       , doctest-discover
