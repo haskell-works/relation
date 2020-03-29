@@ -55,6 +55,8 @@ module Data.Relation (
   , restrictRan     -- Restrict the range to that of the provided set
   , withoutDom      -- Restrict the domain to exclude elements of the provided set
   , withoutRan      -- Restrict the range to exclude elements of the provided set
+  , (<-<)           -- Compose two relations
+  , (>->)
 
     -- ** Conversion
   , toList          -- Construct a list from a relation
@@ -64,6 +66,7 @@ module Data.Relation (
   ) where
 
 import Control.Monad          (MonadPlus, guard)
+import Data.Foldable          (fold)
 import Data.Functor           (Functor ((<$)))
 import Data.Map               (Map)
 import Data.Maybe             (fromMaybe)
@@ -273,3 +276,22 @@ withoutRan s r = Relation
   { R.domain  = M.mapMaybe (S.justUnlessEmpty . flip S.difference s) (R.domain r)
   , R.range   = M.withoutKeys (R.range r) s
   }
+
+-- | Compose two relations: right to left version.
+infixr 9 <-<
+(<-<) :: (Ord a, Ord b, Ord c) => Relation b c -> Relation a b -> Relation a c
+a <-< b = Relation
+  (compose (R.domain a) (R.domain b))
+  (compose (R.range b) (R.range a))
+ where
+  compose a' = M.mapMaybe
+    (S.justUnlessEmpty
+    . fold
+    . M.intersection a'
+    . M.fromSet (const ())
+    )
+
+-- | Compose two relations: left to right version.
+infixl 9 >->
+(>->) :: (Ord a, Ord b, Ord c) => Relation a b -> Relation b c -> Relation a c
+(>->) = flip (<-<)
