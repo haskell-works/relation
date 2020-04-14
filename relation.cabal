@@ -18,7 +18,7 @@ copyright:            (C) 2019-2020 John Ky,
 category:             Data Structures
 stability:            Experimental
 build-type:           Simple
-tested-with:          GHC == 8.8.3, GHC == 8.6.5, GHC == 8.4.4
+tested-with:          GHC == 8.10.1, GHC == 8.8.3, GHC == 8.6.5, GHC == 8.4.4
 extra-source-files:   LICENSE
                       README.md
 
