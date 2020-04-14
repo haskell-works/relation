@@ -69,24 +69,13 @@ test-suite relation-test
   ghc-options:        -threaded -rtsopts -with-rtsopts=-N
   build-tool-depends: hspec-discover:hspec-discover
 
-test-suite relation-doctest
-  import:               base, config
-                      , doctest
-                      , doctest-discover
-                      , relation
-  type:                 exitcode-stdio-1.0
-  ghc-options:          -threaded
-  main-is:              DoctestDriver.hs
-  HS-Source-Dirs:       doctest
-  build-tool-depends:   doctest-discover:doctest-discover
-
 test-suite doctest
   import:               base, config
                       , doctest
                       , doctest-discover
                       , relation
   type:                 exitcode-stdio-1.0
-  ghc-options:          -threaded
+  ghc-options:          -threaded -rtsopts -with-rtsopts=-N
   main-is:              DoctestDriver.hs
   HS-Source-Dirs:       doctest
   build-tool-depends:   doctest-discover:doctest-discover
