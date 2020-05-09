@@ -2,22 +2,22 @@ module Data.RelationSpec
   ( spec
   ) where
 
+import Control.Monad               (replicateM)
 import Data.Relation.Ops
 import HaskellWorks.Hspec.Hedgehog
 import Hedgehog
 import Test.Hspec
 
-import           Control.Monad (replicateM)
 import qualified Data.List              as L
 import qualified Data.Map               as M
 import qualified Data.Relation          as DR
-import qualified Data.Relation.Internal as DR
 import qualified Data.Relation.Gen      as GR
+import qualified Data.Relation.Internal as DR
 import qualified Data.Set               as S
 import qualified Hedgehog.Gen           as G
 import qualified Hedgehog.Range         as R
 
-{-# ANN module ("HLint: ignore Redundant do" :: String) #-}
+{- HLINT ignore "Redundant do" -}
 
 e :: DR.Relation String String
 e = DR.fromList
