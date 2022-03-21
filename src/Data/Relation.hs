@@ -1,3 +1,5 @@
+{-# LANGUAGE CPP #-}
+
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Data.Relation
@@ -67,7 +69,6 @@ module Data.Relation (
 
 import Control.Monad          (MonadPlus, guard)
 import Data.Foldable          (fold)
-import Data.Functor           (Functor ((<$)))
 import Data.Map               (Map)
 import Data.Maybe             (fromMaybe)
 import Data.Relation.Internal (Relation (Relation))
@@ -79,6 +80,10 @@ import qualified Data.Map                   as M
 import qualified Data.Relation.Internal     as R
 import qualified Data.Relation.Internal.Set as S
 import qualified Data.Set                   as S
+
+#if !MIN_VERSION_base(4,13,0)
+import Data.Functor           (Functor ((<$)))
+#endif
 
 -- * Functions about relations
 
